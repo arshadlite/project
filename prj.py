@@ -99,30 +99,48 @@ if all(col in dataset.columns for col in required_columns):
 
 else:
     st.error(f"The dataset must include the following columns: {', '.join(required_columns)}")
+import streamlit as st
+
 st.markdown(
     """
     <style>
-    .footer {
-        position: fixed;
+    /* Wrapper to push content to the bottom */
+    .bottom-content {
+        position: absolute;
         bottom: 0;
         left: 0;
         right: 0;
-        background-color: #f0f0f0;
-        padding: 10px;
         text-align: center;
         font-family: Arial, sans-serif;
+        margin-bottom: 20px; /* Adjust if needed */
     }
-    .footer img {
+    
+    /* Image animation */
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.2);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .bottom-content img {
         border-radius: 50%;
-        width: 50px;
-        height: 50px;
+        width: 80px;
+        height: 80px;
+        animation: pulse 1.5s infinite;
     }
-    .footer p {
+
+    .bottom-content p {
         margin: 5px 0;
-        font-size: 14px;
+        font-size: 16px;
     }
     </style>
-    <div class="footer">
+    <div class="bottom-content">
         <img src="https://raw.githubusercontent.com/arshadlite/project/main/abcd.jpg"  alt="Developer Image">
         <p><strong>Developed by Arshad</strong></p>
         <p>Contact: 8500459433</p>
