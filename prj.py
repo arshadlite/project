@@ -82,15 +82,15 @@ if all(col in dataset.columns for col in required_columns):
             quote = "The air you breathe today is the gift of tomorrow’s health. Stay mindful."
         elif health_score <= 50:
             grade = "Moderate Impact"
-            color = "yellow"
+            color = "orange"
             quote = "Caution: The winds carry more than just whispers; protect your breath."
         elif health_score <= 75:
             grade = "High Impact"
-            color = "orange"
+            color = "red"
             quote = "The haze you ignore today could cloud the health of generations."
         else:
             grade = "Severe Impact"
-            color = "red"
+            color = "#c9083c"
             quote = "When the air turns hostile, the body bears the scars. Act now before it’s too late."
 
         # Displaying the result with grading immediately beside the button
