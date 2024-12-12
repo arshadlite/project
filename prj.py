@@ -19,17 +19,15 @@ def train_model(X, y):
 # Streamlit App
 st.set_page_config(page_title="Health Impact Prediction", page_icon="🌍", layout="centered")
 
-# CSS for local background image and styling
+# CSS for styling
 st.markdown(
     """
     <style>
     body {
-        background-image: url('file:///abcd.jpg');  /* Replace with your local image path */
-        background-size: cover;
-        background-attachment: fixed;
+        background-color: #f0f0f0;  /* Set a simple background color */
     }
     .block-container {
-        background-color: rgba(255, 255, 255, 0.8);
+        background-color: rgba(255, 255, 255, 0.9);
         border-radius: 10px;
         padding: 20px;
     }
@@ -75,6 +73,9 @@ if all(col in dataset.columns for col in required_columns):
         humidity = st.slider("Humidity (%)", float(X['Humidity'].min()), float(X['Humidity'].max()), float(X['Humidity'].mean()))
         wind_speed = st.slider("Wind Speed (m/s)", float(X['WindSpeed'].min()), float(X['WindSpeed'].max()), float(X['WindSpeed'].mean()))
 
+    # Create a result container with a placeholder for the result to be displayed
+    result_placeholder = st.empty()
+
     # Prediction Button
     if st.button("💡 Predict Health Impact Score"):
         input_data = pd.DataFrame({
@@ -95,23 +96,18 @@ if all(col in dataset.columns for col in required_columns):
         if health_score <= 25:
             grade = "Low Impact"
             color = "green"
-            image_path = "abcd.jpg"  # Replace with your local image path
         elif health_score <= 50:
             grade = "Moderate Impact"
-            color = "yellow"
-            image_path = "abcd.jpg"  # Replace with your local image path
+            color = "blue"
         elif health_score <= 75:
             grade = "High Impact"
             color = "orange"
-            image_path = "abcd.jpg"  # Replace with your local image path
         else:
             grade = "Severe Impact"
             color = "red"
-            image_path = "abcd.jpg"  # Replace with your local image path
 
-        # Displaying the result with grading
-        st.markdown(f"<h3 style='color:{color};'>{grade} (Score: {health_score:.2f})</h3>", unsafe_allow_html=True)
-        st.image(image_path, caption=f"Health Impact Level: {grade}")
+        # Displaying the result with grading immediately beside the button
+        result_placeholder.markdown(f"<h3 style='color:{color};'>{grade} (Score: {health_score:.2f})</h3>", unsafe_allow_html=True)
 
 else:
     st.error(f"The dataset must include the following columns: {', '.join(required_columns)}")
