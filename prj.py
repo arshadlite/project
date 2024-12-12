@@ -98,7 +98,7 @@ if all(col in dataset.columns for col in required_columns):
         # Displaying the result with grading immediately beside the button
         result_placeholder.markdown(f"<h3 style='color:{color};'>{grade} (Score: {health_score:.2f})</h3>", unsafe_allow_html=True)
         st.markdown(f" *{quote}*")
-         st.image(image_path, caption=f"{grade} Level", use_column_width=True)
+        st.image(image_path, caption=f"{grade} Level", use_column_width=True)
 
 else:
     st.error(f"The dataset must include the following columns: {', '.join(required_columns)}")
