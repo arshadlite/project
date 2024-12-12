@@ -9,7 +9,7 @@ st.title("Health Impact Score Prediction")
 st.write("Upload your dataset and enter air quality parameters to predict the Health Impact Score.")
 
 # Sidebar for uploading dataset
-uploaded_file = st.sidebar.file_uploader(""air_quality_health_impact_data.csv"", type=["csv"])
+uploaded_file = st.sidebar.file_uploader("air_quality_health_impact_data.csv", type=["csv"])
 
 if uploaded_file:
     # Load dataset
