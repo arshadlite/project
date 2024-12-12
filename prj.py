@@ -6,7 +6,7 @@ from sklearn.ensemble import RandomForestRegressor
 # Load the dataset from the repository
 @st.cache_data
 def load_data():
-    return pd.read_csv("air_quality_health_impact_data.csv")  # Replace 'dataset.csv' with your dataset file path in the repository
+    return pd.read_csv("air_quality_health_impact_data.csv")  # Replace with your dataset file path in the repository
 
 # Train a Random Forest model
 @st.cache_resource
@@ -19,12 +19,12 @@ def train_model(X, y):
 # Streamlit App
 st.set_page_config(page_title="Health Impact Prediction", page_icon="🌍", layout="centered")
 
-# CSS for background image and styling
+# CSS for local background image and styling
 st.markdown(
     """
     <style>
     body {
-        background-image: url('abcd.jpg');
+        background-image: url('file:///abcd.jpg');  /* Replace with your local image path */
         background-size: cover;
         background-attachment: fixed;
     }
@@ -95,23 +95,23 @@ if all(col in dataset.columns for col in required_columns):
         if health_score <= 25:
             grade = "Low Impact"
             color = "green"
-            image_url = "https://example.com/low_impact_image.jpg"  # Replace with your bright image URL
+            image_path = "abcd.jpg"  # Replace with your local image path
         elif health_score <= 50:
             grade = "Moderate Impact"
-            color = "blue"
-            image_url = "https://example.com/moderate_impact_image.jpg"  # Replace with your bright image URL
+            color = "yellow"
+            image_path = "abcd.jpg"  # Replace with your local image path
         elif health_score <= 75:
             grade = "High Impact"
             color = "orange"
-            image_url = "https://example.com/high_impact_image.jpg"  # Replace with your bright image URL
+            image_path = "abcd.jpg"  # Replace with your local image path
         else:
             grade = "Severe Impact"
             color = "red"
-            image_url = "https://example.com/severe_impact_image.jpg"  # Replace with your bright image URL
+            image_path = "abcd.jpg"  # Replace with your local image path
 
         # Displaying the result with grading
         st.markdown(f"<h3 style='color:{color};'>{grade} (Score: {health_score:.2f})</h3>", unsafe_allow_html=True)
-        st.image(image_url, caption=f"Health Impact Level: {grade}")
+        st.image(image_path, caption=f"Health Impact Level: {grade}")
 
 else:
     st.error(f"The dataset must include the following columns: {', '.join(required_columns)}")
