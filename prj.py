@@ -98,13 +98,13 @@ if all(col in dataset.columns for col in required_columns):
             color = "green"
         elif health_score <= 50:
             grade = "Moderate Impact"
-            color = "yellow"
+            color = "orange"
         elif health_score <= 75:
             grade = "High Impact"
-            color = "orange"
+            color = "red"
         else:
             grade = "Severe Impact"
-            color = "red"
+            color = "#ed120e"
 
         # Displaying the result with grading immediately beside the button
         result_placeholder.markdown(f"<h3 style='color:{color};'>{grade} (Score: {health_score:.2f})</h3>", unsafe_allow_html=True)
