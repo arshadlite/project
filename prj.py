@@ -24,7 +24,7 @@ st.markdown(
     """
     <style>
     .slider input[type="range"] {
-        background: linear-gradient(to right, green, yellow, orange, red);
+        background: linear-gradient(to right, green 0%, yellow 50%, red 100%);
         border-radius: 10px;
         height: 10px;
     }
@@ -103,7 +103,7 @@ if all(col in dataset.columns for col in required_columns):
             grade = "Severe Impact"
             color = "red"
 
-        # Display result with grading immediately beside the button
+        # Displaying the result with grading immediately beside the button
         result_placeholder.markdown(f"<h3 style='color:{color};'>{grade} (Score: {health_score:.2f})</h3>", unsafe_allow_html=True)
 
 else:
