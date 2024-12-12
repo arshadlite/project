@@ -112,18 +112,7 @@ st.markdown(
         z-index: 9999; /* Ensures it stays on top */
     }
     
-    /* Image animation */
-    @keyframes pulse {
-        0% {
-            transform: scale(1);
-        }
-        50% {
-            transform: scale(1.2);
-        }
-        100% {
-            transform: scale(1);
-        }
-    }
+   
 
     .bottom-left-content img {
         border-radius: 50%;
@@ -140,7 +129,7 @@ st.markdown(
     <div class="bottom-left-content">
         <img src="https://raw.githubusercontent.com/arshadlite/project/main/abcd.jpg"  alt="Developer Image">
         <p><strong>Developed by Arshad</strong></p>
-        <p>Contact: 8500459433</p>
+        
     </div>
     """,
     unsafe_allow_html=True,
