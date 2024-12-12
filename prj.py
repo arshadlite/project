@@ -24,7 +24,7 @@ st.markdown(
     """
     <style>
     body {
-        background-image: url('https://cdn.pixabay.com/photo/2016/11/18/16/20/storm-1838341_960_720.jpg');
+        background-image: url('abcd.jpg');
         background-size: cover;
         background-attachment: fixed;
     }
@@ -95,19 +95,19 @@ if all(col in dataset.columns for col in required_columns):
         if health_score <= 25:
             grade = "Low Impact"
             color = "green"
-            image_url = "https://example.com/low_impact_image.jpg"  # Replace with your image URL
+            image_url = "https://example.com/low_impact_image.jpg"  # Replace with your bright image URL
         elif health_score <= 50:
             grade = "Moderate Impact"
             color = "yellow"
-            image_url = "https://example.com/moderate_impact_image.jpg"  # Replace with your image URL
+            image_url = "https://example.com/moderate_impact_image.jpg"  # Replace with your bright image URL
         elif health_score <= 75:
             grade = "High Impact"
             color = "orange"
-            image_url = "https://example.com/high_impact_image.jpg"  # Replace with your image URL
+            image_url = "https://example.com/high_impact_image.jpg"  # Replace with your bright image URL
         else:
             grade = "Severe Impact"
             color = "red"
-            image_url = "https://example.com/severe_impact_image.jpg"  # Replace with your image URL
+            image_url = "https://example.com/severe_impact_image.jpg"  # Replace with your bright image URL
 
         # Displaying the result with grading
         st.markdown(f"<h3 style='color:{color};'>{grade} (Score: {health_score:.2f})</h3>", unsafe_allow_html=True)
