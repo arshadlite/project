@@ -19,17 +19,14 @@ def train_model(X, y):
 # Streamlit App
 st.set_page_config(page_title="Health Impact Prediction", page_icon="🌍", layout="centered")
 
-# CSS for styling
+# CSS for dynamic slider color
 st.markdown(
     """
     <style>
-    body {
-        background-color: #f0f0f0;  /* Set a simple background color */
-    }
-    .block-container {
-        background-color: rgba(255, 255, 255, 0.9);
+    .slider input[type="range"] {
+        background: linear-gradient(to right, green, yellow, orange, red);
         border-radius: 10px;
-        padding: 20px;
+        height: 10px;
     }
     </style>
     """,
@@ -91,22 +88,22 @@ if all(col in dataset.columns for col in required_columns):
         })
         prediction = model.predict(input_data)[0]
 
-        # Grading the Health Impact Score (1 to 100)
+        # Grading the Health Impact Score
         health_score = prediction
         if health_score <= 25:
             grade = "Low Impact"
             color = "green"
         elif health_score <= 50:
             grade = "Moderate Impact"
-            color = "orange"
+            color = "yellow"
         elif health_score <= 75:
             grade = "High Impact"
-            color = "red"
+            color = "orange"
         else:
             grade = "Severe Impact"
-            color = "#ed120e"
+            color = "red"
 
-        # Displaying the result with grading immediately beside the button
+        # Display result with grading immediately beside the button
         result_placeholder.markdown(f"<h3 style='color:{color};'>{grade} (Score: {health_score:.2f})</h3>", unsafe_allow_html=True)
 
 else:
