@@ -101,18 +101,18 @@ else:
     st.error(f"The dataset must include the following columns: {', '.join(required_columns)}")
 import streamlit as st
 
+import streamlit as st
+
 st.markdown(
     """
     <style>
-    /* Wrapper to push content to the bottom */
-    .bottom-content {
+    /* Wrapper to position the content at the bottom left corner */
+    .bottom-left-content {
         position: absolute;
         bottom: 0;
         left: 0;
-        right: 0;
-        text-align: center;
+        padding: 20px;
         font-family: Arial, sans-serif;
-        margin-bottom: 20px; /* Adjust if needed */
     }
     
     /* Image animation */
@@ -128,19 +128,19 @@ st.markdown(
         }
     }
 
-    .bottom-content img {
+    .bottom-left-content img {
         border-radius: 50%;
         width: 80px;
         height: 80px;
         animation: pulse 1.5s infinite;
     }
 
-    .bottom-content p {
+    .bottom-left-content p {
         margin: 5px 0;
         font-size: 16px;
     }
     </style>
-    <div class="bottom-content">
+    <div class="bottom-left-content">
         <img src="https://raw.githubusercontent.com/arshadlite/project/main/abcd.jpg"  alt="Developer Image">
         <p><strong>Developed by Arshad</strong></p>
         <p>Contact: 8500459433</p>
