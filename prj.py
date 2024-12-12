@@ -24,7 +24,7 @@ st.markdown(
     """
     <style>
     body {
-        background-image: url('abcd.jpg');
+        background-image: 'abcd.jpg';
         background-size: cover;
         background-attachment: fixed;
     }
@@ -98,7 +98,7 @@ if all(col in dataset.columns for col in required_columns):
             image_url = "https://example.com/low_impact_image.jpg"  # Replace with your bright image URL
         elif health_score <= 50:
             grade = "Moderate Impact"
-            color = "yellow"
+            color = "blue"
             image_url = "https://example.com/moderate_impact_image.jpg"  # Replace with your bright image URL
         elif health_score <= 75:
             grade = "High Impact"
