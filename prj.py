@@ -2,11 +2,12 @@ import streamlit as st
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
+import shap
 
 # Load the dataset from the repository
 @st.cache_data
 def load_data():
-    return pd.read_csv("air_quality_health_impact_data.csv")  # Replace with your dataset file path in the repository
+    return pd.read_csv("air_quality_health_impact_data.csv")
 
 # Train a Random Forest model
 @st.cache_resource
@@ -14,36 +15,14 @@ def train_model(X, y):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
     model = RandomForestRegressor(random_state=42)
     model.fit(X_train, y_train)
-    return model
+    return model, X_train, X_test, y_train, y_test
 
 # Streamlit App
 st.set_page_config(page_title="Health Impact Prediction", page_icon="🌍", layout="centered")
 
-# CSS for styling
-st.markdown(
-    """
-    <style>
-    body {
-        background-color: #f0f0f0;  /* Set a simple background color */
-    }
-    .block-container {
-        background-color: rgba(255, 255, 255, 0.9);
-        border-radius: 10px;
-        padding: 20px;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-
 # Main content
 st.title("🌍 Health Impact Score Prediction")
-st.markdown(
-    """
-    Enter air quality parameters below to predict the **Health Impact Score**.
-    This tool helps in analyzing urban air quality and its impact on public health.
-    """
-)
+st.markdown("Enter air quality parameters below to predict the **Health Impact Score**.")
 
 # Load dataset
 dataset = load_data()
@@ -54,12 +33,11 @@ if all(col in dataset.columns for col in required_columns):
     # Prepare data
     X = dataset[['AQI', 'PM10', 'PM2_5', 'NO2', 'SO2', 'O3', 'Temperature', 'Humidity', 'WindSpeed']]
     y = dataset['HealthImpactScore']
-    model = train_model(X, y)
+    model, X_train, X_test, y_train, y_test = train_model(X, y)
 
     # Interactive Inputs for Prediction
     st.write("### Input Air Quality Parameters")
     col1, col2 = st.columns(2)
-
     with col1:
         aqi = st.slider("AQI (Air Quality Index)", int(X['AQI'].min()), int(X['AQI'].max()), int(X['AQI'].mean()))
         pm10 = st.slider("PM10 (Particulate Matter ≤ 10μm)", int(X['PM10'].min()), int(X['PM10'].max()), int(X['PM10'].mean()))
@@ -72,9 +50,6 @@ if all(col in dataset.columns for col in required_columns):
         temperature = st.slider("Temperature (°C)", float(X['Temperature'].min()), float(X['Temperature'].max()), float(X['Temperature'].mean()))
         humidity = st.slider("Humidity (%)", float(X['Humidity'].min()), float(X['Humidity'].max()), float(X['Humidity'].mean()))
         wind_speed = st.slider("Wind Speed (m/s)", float(X['WindSpeed'].min()), float(X['WindSpeed'].max()), float(X['WindSpeed'].mean()))
-
-    # Create a result container with a placeholder for the result to be displayed
-    result_placeholder = st.empty()
 
     # Prediction Button
     if st.button("💡 Predict Health Impact Score"):
@@ -91,14 +66,14 @@ if all(col in dataset.columns for col in required_columns):
         })
         prediction = model.predict(input_data)[0]
 
-        # Grading the Health Impact Score (1 to 100)
+        # Grading the Health Impact Score
         health_score = prediction
         if health_score <= 25:
             grade = "Low Impact"
             color = "green"
         elif health_score <= 50:
             grade = "Moderate Impact"
-            color = "blue"
+            color = "yellow"
         elif health_score <= 75:
             grade = "High Impact"
             color = "orange"
@@ -106,8 +81,15 @@ if all(col in dataset.columns for col in required_columns):
             grade = "Severe Impact"
             color = "red"
 
-        # Displaying the result with grading immediately beside the button
-        result_placeholder.markdown(f"<h3 style='color:{color};'>{grade} (Score: {health_score:.2f})</h3>", unsafe_allow_html=True)
+        # Display result with grading
+        st.markdown(f"<h3 style='color:{color};'>{grade} (Score: {health_score:.2f})</h3>", unsafe_allow_html=True)
+
+        # Explain the model prediction with SHAP
+        explainer = shap.Explainer(model, X_train)
+        shap_values = explainer(X_test)
+        st.write("### Feature Importance (SHAP)")
+        shap.summary_plot(shap_values, X_test, plot_type="bar")
+        st.pyplot()
 
 else:
     st.error(f"The dataset must include the following columns: {', '.join(required_columns)}")
