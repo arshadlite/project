@@ -19,22 +19,8 @@ def train_model(X, y):
 # Streamlit App
 st.set_page_config(page_title="Health Impact Prediction", page_icon="🌍", layout="centered")
 
-# CSS for dynamic slider color
-st.markdown(
-    """
-    <style>
-    .slider input[type="range"] {
-        background: linear-gradient(to right, green 0%, yellow 50%, red 100%);
-        border-radius: 10px;
-        height: 10px;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-
 # Main content
-st.title("🌍 Health Impact Score Prediction")
+st.title("🌍 Breathing in the Numbers: Predicting Health Impact with Air Quality Intelligence")
 st.markdown(
     """
     Enter air quality parameters below to predict the **Health Impact Score**.
@@ -93,18 +79,23 @@ if all(col in dataset.columns for col in required_columns):
         if health_score <= 25:
             grade = "Low Impact"
             color = "green"
+            quote = "The air you breathe today is the gift of tomorrow’s health. Stay mindful."
         elif health_score <= 50:
             grade = "Moderate Impact"
             color = "yellow"
+            quote = "Caution: The winds carry more than just whispers; protect your breath."
         elif health_score <= 75:
             grade = "High Impact"
             color = "orange"
+            quote = "The haze you ignore today could cloud the health of generations."
         else:
             grade = "Severe Impact"
             color = "red"
+            quote = "When the air turns hostile, the body bears the scars. Act now before it’s too late."
 
         # Displaying the result with grading immediately beside the button
         result_placeholder.markdown(f"<h3 style='color:{color};'>{grade} (Score: {health_score:.2f})</h3>", unsafe_allow_html=True)
+        st.markdown(f"**Quote:** *{quote}*")
 
 else:
     st.error(f"The dataset must include the following columns: {', '.join(required_columns)}")
