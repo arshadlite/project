@@ -99,20 +99,17 @@ if all(col in dataset.columns for col in required_columns):
 
 else:
     st.error(f"The dataset must include the following columns: {', '.join(required_columns)}")
-import streamlit as st
-
-import streamlit as st
 
 st.markdown(
     """
     <style>
     /* Wrapper to position the content at the bottom left corner */
     .bottom-left-content {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        padding: 20px;
+        position: fixed;
+        bottom: 20px;  /* Adjust the distance from the bottom */
+        left: 20px;    /* Adjust the distance from the left */
         font-family: Arial, sans-serif;
+        z-index: 9999; /* Ensures it stays on top */
     }
     
     /* Image animation */
