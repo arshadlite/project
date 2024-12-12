@@ -127,7 +127,7 @@ st.markdown(
     }
     </style>
     <div class="bottom-left-content">
-        <img src="https://raw.githubusercontent.com/arshadlite/project/main/abcd.jpg"  alt="Developer Image">
+        <img src="https://drive.google.com/file/d/1dBYZ7WzxMJG4h-r-cnJa1H1tnQCQECEd/view?usp=sharing"  alt="Developer Image">
         <p><strong>Developed by Arshad</strong></p>
         
     </div>
