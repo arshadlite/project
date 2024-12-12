@@ -99,3 +99,34 @@ if all(col in dataset.columns for col in required_columns):
 
 else:
     st.error(f"The dataset must include the following columns: {', '.join(required_columns)}")
+st.markdown(
+    """
+    <style>
+    .footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: #f0f0f0;
+        padding: 10px;
+        text-align: center;
+        font-family: Arial, sans-serif;
+    }
+    .footer img {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+    }
+    .footer p {
+        margin: 5px 0;
+        font-size: 14px;
+    }
+    </style>
+    <div class="footer">
+        <img src="abcd.jpg" alt="Developer Image">
+        <p><strong>Developed by Arshad</strong></p>
+        <p>Contact: 8500459433</p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
