@@ -1,50 +1,53 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error, r2_score
 import shap
 
-# Streamlit UI
+# Streamlit App
 st.title("Urban Air Quality and Health Impact Analysis")
 
-# Sidebar for user inputs
-st.sidebar.header("User Inputs")
+# Sidebar for uploading dataset
+st.sidebar.header("Upload Dataset")
 uploaded_file = st.sidebar.file_uploader("air_quality_health_impact_data.csv", type=["csv"])
 
 if uploaded_file:
     # Load dataset
-    data = pd.read_csv(uploaded_file)
-    st.write("### Uploaded Dataset")
-    st.write(data.head())
+    dataset = pd.read_csv(uploaded_file)
+    st.write("### Dataset Preview")
+    st.dataframe(dataset.head())
     
-    # Select columns for features and target
-    st.sidebar.write("### Model Configuration")
-    features = st.sidebar.multiselect("Select feature columns", options=data.columns)
-    target = st.sidebar.selectbox("Select target column", options=data.columns)
+    # Feature and Target Selection
+    st.sidebar.header("Feature Selection")
+    features = ['AQI', 'PM10', 'PM2_5', 'NO2', 'SO2', 'O3', 'Temperature', 'Humidity', 'WindSpeed']
+    target = 'HealthImpactScore'
 
-    if features and target:
-        # Splitting data
-        X = data[features]
-        y = data[target]
+    # Ensure columns are present
+    if all(col in dataset.columns for col in features + [target]):
+        X = dataset[features]
+        y = dataset[target]
 
-        # Train-test split
-        from sklearn.model_selection import train_test_split
+        # Split data
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
-        # Random Forest Regressor
-        model = RandomForestRegressor(random_state=42)
+        # Model Training
+        st.sidebar.header("Model Parameters")
+        n_estimators = st.sidebar.slider("Number of Trees in Random Forest", 10, 200, 100)
+        max_depth = st.sidebar.slider("Maximum Depth of Trees", 5, 50, 20)
+
+        model = RandomForestRegressor(n_estimators=n_estimators, max_depth=max_depth, random_state=42)
         model.fit(X_train, y_train)
-        predictions = model.predict(X_test)
+        y_pred = model.predict(X_test)
 
-        # Display model performance
+        # Display Model Performance
         st.write("### Model Performance")
-        from sklearn.metrics import mean_squared_error, r2_score
-        st.write(f"R² Score: {r2_score(y_test, predictions):.2f}")
-        st.write(f"RMSE: {np.sqrt(mean_squared_error(y_test, predictions)):.2f}")
+        st.write(f"R² Score: {r2_score(y_test, y_pred):.2f}")
+        st.write(f"RMSE: {mean_squared_error(y_test, y_pred, squared=False):.2f}")
 
-        # Feature importance using SHAP
+        # SHAP Feature Importance
         explainer = shap.Explainer(model, X_train)
         shap_values = explainer(X_test)
 
@@ -53,10 +56,22 @@ if uploaded_file:
         st.pyplot()
 
         # Predictions vs Actuals
-        st.write("### Predictions vs Actual")
+        st.write("### Predictions vs Actuals")
         fig, ax = plt.subplots()
-        sns.scatterplot(x=y_test, y=predictions, ax=ax)
+        sns.scatterplot(x=y_test, y=y_pred, ax=ax)
         ax.set_xlabel("Actual Values")
         ax.set_ylabel("Predicted Values")
         ax.set_title("Actual vs Predicted")
         st.pyplot(fig)
+        
+        # Correlation Heatmap
+        st.write("### Correlation Heatmap")
+        corr = dataset[features + [target]].corr()
+        fig, ax = plt.subplots(figsize=(10, 6))
+        sns.heatmap(corr, annot=True, cmap="coolwarm", ax=ax)
+        st.pyplot(fig)
+
+    else:
+        st.error("The uploaded dataset does not contain all required columns.")
+else:
+    st.info("Please upload a CSV file to proceed.")
