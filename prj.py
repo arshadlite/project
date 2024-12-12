@@ -80,6 +80,7 @@ if all(col in dataset.columns for col in required_columns):
             grade = "Low Impact"
             color = "green"
             quote = "The air you breathe today is the gift of tomorrow’s health. Stay mindful."
+            image
         elif health_score <= 50:
             grade = "Moderate Impact"
             color = "orange"
@@ -92,10 +93,12 @@ if all(col in dataset.columns for col in required_columns):
             grade = "Severe Impact"
             color = "#c9083c"
             quote = "When the air turns hostile, the body bears the scars. Act now before it’s too late."
+            image_path = "https://raw.githubusercontent.com/arshadlite/project/main/abcd.jpg"
 
         # Displaying the result with grading immediately beside the button
         result_placeholder.markdown(f"<h3 style='color:{color};'>{grade} (Score: {health_score:.2f})</h3>", unsafe_allow_html=True)
-        st.markdown(f"**Quote:** *{quote}*")
+        st.markdown(f" *{quote}*")
+         st.image(image_path, caption=f"{grade} Level", use_column_width=True)
 
 else:
     st.error(f"The dataset must include the following columns: {', '.join(required_columns)}")
