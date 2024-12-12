@@ -123,7 +123,7 @@ st.markdown(
     }
     </style>
     <div class="footer">
-        <img src="ttps://raw.githubusercontent.com/arshadlite/project/main/abcd.jpg"  alt="Developer Image">
+        <img src="https://raw.githubusercontent.com/arshadlite/project/main/abcd.jpg"  alt="Developer Image">
         <p><strong>Developed by Arshad</strong></p>
         <p>Contact: 8500459433</p>
     </div>
