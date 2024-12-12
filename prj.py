@@ -3,7 +3,20 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 
-# Set up page configuration with a background image
+# Load the dataset from the repository
+@st.cache_data
+def load_data():
+    return pd.read_csv("air_quality_health_impact_data.csv")  # Replace 'dataset.csv' with your dataset file path in the repository
+
+# Train a Random Forest model
+@st.cache_resource
+def train_model(X, y):
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+    model = RandomForestRegressor(random_state=42)
+    model.fit(X_train, y_train)
+    return model
+
+# Streamlit App
 st.set_page_config(page_title="Health Impact Prediction", page_icon="🌍", layout="centered")
 
 # CSS for background image and styling
@@ -25,19 +38,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Load the dataset
-@st.cache_data
-def load_data():
-    return pd.read_csv("air_quality_health_impact_data.csv")  # Replace 'dataset.csv' with your dataset file path in the repository
-
-# Train a Random Forest model
-@st.cache_resource
-def train_model(X, y):
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-    model = RandomForestRegressor(random_state=42)
-    model.fit(X_train, y_train)
-    return model
-
 # Main content
 st.title("🌍 Health Impact Score Prediction")
 st.markdown(
@@ -50,7 +50,7 @@ st.markdown(
 # Load dataset
 dataset = load_data()
 
-# Check required columns
+# Ensure required columns are in the dataset
 required_columns = ['AQI', 'PM10', 'PM2_5', 'NO2', 'SO2', 'O3', 'Temperature', 'Humidity', 'WindSpeed', 'HealthImpactScore']
 if all(col in dataset.columns for col in required_columns):
     # Prepare data
@@ -58,7 +58,7 @@ if all(col in dataset.columns for col in required_columns):
     y = dataset['HealthImpactScore']
     model = train_model(X, y)
 
-    # Interactive input sliders
+    # Interactive Inputs for Prediction
     st.write("### Input Air Quality Parameters")
     col1, col2 = st.columns(2)
 
@@ -75,7 +75,7 @@ if all(col in dataset.columns for col in required_columns):
         humidity = st.slider("Humidity (%)", float(X['Humidity'].min()), float(X['Humidity'].max()), float(X['Humidity'].mean()))
         wind_speed = st.slider("Wind Speed (m/s)", float(X['WindSpeed'].min()), float(X['WindSpeed'].max()), float(X['WindSpeed'].mean()))
 
-    # Predict Health Impact Score
+    # Prediction Button
     if st.button("💡 Predict Health Impact Score"):
         input_data = pd.DataFrame({
             'AQI': [aqi],
@@ -89,6 +89,29 @@ if all(col in dataset.columns for col in required_columns):
             'WindSpeed': [wind_speed],
         })
         prediction = model.predict(input_data)[0]
-        st.success(f"### Predicted Health Impact Score: {prediction:.2f}")
+
+        # Grading the Health Impact Score (1 to 100)
+        health_score = prediction
+        if health_score <= 25:
+            grade = "Low Impact"
+            color = "green"
+            image_url = "https://example.com/low_impact_image.jpg"  # Replace with your image URL
+        elif health_score <= 50:
+            grade = "Moderate Impact"
+            color = "yellow"
+            image_url = "https://example.com/moderate_impact_image.jpg"  # Replace with your image URL
+        elif health_score <= 75:
+            grade = "High Impact"
+            color = "orange"
+            image_url = "https://example.com/high_impact_image.jpg"  # Replace with your image URL
+        else:
+            grade = "Severe Impact"
+            color = "red"
+            image_url = "https://example.com/severe_impact_image.jpg"  # Replace with your image URL
+
+        # Displaying the result with grading
+        st.markdown(f"<h3 style='color:{color};'>{grade} (Score: {health_score:.2f})</h3>", unsafe_allow_html=True)
+        st.image(image_url, caption=f"Health Impact Level: {grade}")
+
 else:
     st.error(f"The dataset must include the following columns: {', '.join(required_columns)}")
