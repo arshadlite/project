@@ -76,7 +76,7 @@ if all(col in dataset.columns for col in required_columns):
 
         # Grading the Health Impact Score
         health_score = prediction
-        if health_score <= 25:
+        if health_score <= 30:
             grade = "Low Impact"
             color = "green"
             quote = "The air you breathe today is the gift of tomorrow’s health. Stay mindful."
