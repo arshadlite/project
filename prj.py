@@ -80,7 +80,6 @@ if all(col in dataset.columns for col in required_columns):
             grade = "Low Impact"
             color = "green"
             quote = "The air you breathe today is the gift of tomorrow’s health. Stay mindful."
-            image
         elif health_score <= 50:
             grade = "Moderate Impact"
             color = "orange"
